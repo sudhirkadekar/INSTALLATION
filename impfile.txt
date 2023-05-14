@@ -1,0 +1,162 @@
+JAVA INSTALLATION
+
+sudo yum install java-17-amazon-corretto-devel      java-17
+
+amazon-linux-extras list                            java-11
+amazon-linux-extras install java-openjdk11
+
+yum install java-1.8* -y                            java-1.8.0-163
+
+find /usr/lib/jvm/java-1.* | head -n 3
+
+Environment Variable
+
+JAVA_HOME=
+M2_HOME=
+M2= /bin
+
+PATH=$PATH:$HOME/bin:$JAVA_HOME:$M2:$M2_HOME
+
+export $PATH
+
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+GIT INSTALLATION
+
+yum install git -y
+git init
+
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+MAVEN INSTALLATION
+
+wget https://archive.apache.org/dist/maven/maven-3/3.8.4/binaries/apache-maven-3.8.4-bin.zip
+unzip https://archive.apache.org/dist/maven/maven-3/3.8.4/binaries/apache-maven-3.8.4-bin.zip
+
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+SONARQUBE INSTALLATION
+java-17 JDK
+wget https://binaries.sonarsource.com/Distribution/sonarqube/sonarqube-9.9.1.69595.zip
+
+bin ./sonar.sh start
+conf for information
+
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+JENKINS INSTALLATION
+
+wget https://dlcdn.apache.org/tomcat/tomcat-9/v9.0.75/bin/apache-tomcat-9.0.75.zip
+unzip https://dlcdn.apache.org/tomcat/tomcat-9/v9.0.75/bin/apache-tomcat-9.0.75.zip
+
+cd bin
+chmod 777 *
+./startup.sh
+
+cd webapps
+wget https://get.jenkins.io/war-stable/2.346.3/jenkins.war
+
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+ANSIBLE INSTALLATION
+
+1) https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm
+
+https://docs.fedoraproject.org/en-US/epel/
+
+yum install epel-release-latest-7.noarch.rpm -y
+    2  yum update -y
+    3  yum install ansible
+    4  ansible localhost -m ping
+    5  ansible --version
+	
+2) yum install ansible -y
+Loaded plugins: extras_suggestions, langpacks, priorities, update-motd
+No package ansible available.
+Error: Nothing to do
+
+
+ansible is available in Amazon Linux Extra topic "ansible2"
+
+To use, run
+####### sudo amazon-linux-extras install ansible2  ----run this command 
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+DOCKER INSTALLATION  ==   https://docs.docker.com/engine/install/
+1)amazon linux
+sudo yum install -y yum-utils
+sudo yum-config-manager --add-repo https://download.docker.com/linux/rhel/docker-ce.repo
+
+sudo yum install docker-ce
+sudo systemctl start docker
+
+2)For ubuntu
+lsb_release -a
+check if any of these is available
+cosmic 18.10
+Bionic 18.04 (LTS)
+Xenial 16.04 (LTS)
+
+3)Centos
+cat /etc/redhat-release
+sudo systemctl start docker
+
+sudo usermod -aG docker ubuntu
+docker info
+........................................................................................................................................................................
+
+Docker-compose
+
+old version
+sudo curl -L https://github.com/docker/compose/releases/download/1.21.0/docker-compose-`uname -s`-`uname -m` | sudo tee /usr/local/bin/docker-compose > /dev/null
+sudo chmod +x /usr/local/bin/docker-compose
+ln -s /usr/local/bin/docker-compose /usr/bin/docker-compose
+docker-compose --version
+
+
+https://docs.docker.com/compose/install/other/#install-compose-standalone
+
+
+new version
+curl -SL https://github.com/docker/compose/releases/download/v2.11.0/docker-compose-linux-x86_64 -o /usr/local/bin/docker-compose
+sudo chmod +x /usr/local/bin/docker-compose 
+sudo ln -s /usr/local/bin/docker-compose /usr/bin/docker-compose
+sudo chmod +x /usr/bin/docker-compose
+
+......................................................................................................................................................................
+
+SSH Configuration
+
+
+create user ansible and set same password on all the machines
+
+give sudo permission to ansible user
+
+ansible ALL=(ALL)       NOPASSWD: ALL
+
+step-5:- /etc/ssh/sshd_config  --with root user
+
+edit below
+
+PermitRootLogin yes  -- uncomment
+# To disable tunneled clear text passwords, change to no here!
+PasswordAuthentication yes  -- uncomment
+#PermitEmptyPasswords no
+#PasswordAuthentication no  -- comment
+
+save the file and then 
+
+service sshd restart
+
+ssh-keygen  
+
+a .ssh folder is created and inside .ssh folder
+
+ls -ltr
+
+-rw-r--r-- 1 ansible ansible  348 May 13 03:19 known_hosts
+-rw-r--r-- 1 ansible ansible  434 May 13 03:31 id_rsa.pub
+-rw------- 1 ansible ansible 1675 May 13 03:31 id_rsa
+ pwd
+/home/ansible/.ssh
+
+ssh-copy-id ansible@172.31.3.94
+
+ ssh ansible@172.31.3.94
+
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------
